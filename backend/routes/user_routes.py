@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from services.user_service import get_all_users # 导入上面的 Service
+from services.user_service import get_all_sys_users # 导入上面的 Service
 
 # 创建一个蓝图对象
 user_bp = Blueprint('user_bp', __name__)
@@ -7,7 +7,7 @@ user_bp = Blueprint('user_bp', __name__)
 @user_bp.route('/', methods=['GET'])
 def get_users_api():
     # 1. 调用 Service 层获取数据
-    data = get_all_users()
+    data = get_all_sys_users()
     
     # 2. 统一返回格式 (Member A 的工作)
     if data is not None:
