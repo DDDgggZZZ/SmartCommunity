@@ -1,7 +1,0 @@
-class Config:
-    DB_HOST = "127.0.0.1"
-    DB_PORT = 3306
-    DB_USER = "root"
-    DB_PASSWORD = "your_password"
-    DB_NAME = "smartcommunity"
-    DB_CHARSET = "utf8mb4"

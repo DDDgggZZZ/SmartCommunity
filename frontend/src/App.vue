@@ -1,38 +1,26 @@
 <template>
-  <div class="user-container">
-    <h2>业主信息列表</h2>
-    
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="id" label="ID" width="80" />
-      <el-table-column prop="username" label="姓名" width="120" />
-      <el-table-column prop="phone" label="电话" width="150" />
-      <el-table-column prop="role" label="角色" />
-      <el-table-column prop="create_time" label="注册时间" width="180" />
-    </el-table>
-  </div>
+  <router-view />
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
-import { getUserList } from './api/user' // 引入接口
+<style>
+/* 全局滚动条样式，适配极客风 */
+/* 让滚动条变细，颜色变暗，符合黑客终端的审美 */
 
-const tableData = ref([]) // 响应式数据
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
-// 页面加载完成后自动执行
-onMounted(async () => {
-  try {
-    // 调用后端接口
-    const data = await getUserList()
-    console.log("后端返回的数据:", data)
-    tableData.value = data // 将数据赋值给表格
-  } catch (error) {
-    console.error("获取失败", error)
-  }
-})
-</script>
+::-webkit-scrollbar-track {
+  background: var(--geek-bg); /* 对应 geek-theme.css 中的背景色 */
+}
 
-<style scoped>
-.user-container {
-  padding: 20px;
+::-webkit-scrollbar-thumb {
+  background: var(--geek-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--geek-primary); /* 悬停时显示高亮色 */
 }
 </style>

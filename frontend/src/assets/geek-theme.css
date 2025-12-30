@@ -1,0 +1,67 @@
+/* frontend/src/assets/geek-theme.css */
+:root {
+  --geek-bg: #0d1117;       /* GitHub Dark Background */
+  --geek-panel: #161b22;    /* Panel Background */
+  --geek-border: #30363d;   /* Border */
+  --geek-text: #c9d1d9;     /* Text */
+  --geek-primary: #58a6ff;  /* Blue Accent */
+  --geek-success: #2ea043;  /* Green Accent */
+  --geek-danger: #da3633;   /* Red Accent */
+  --geek-font: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+}
+
+body {
+  background-color: var(--geek-bg);
+  color: var(--geek-text);
+  font-family: var(--geek-font);
+  margin: 0;
+}
+
+/* 覆盖 Element Plus 的默认变量以适配黑客风 */
+:root {
+  --el-color-primary: var(--geek-primary);
+  --el-bg-color: var(--geek-bg);
+  --el-bg-color-overlay: var(--geek-panel);
+  --el-text-color-primary: var(--geek-text);
+  --el-border-color: var(--geek-border);
+  --el-border-color-light: var(--geek-border);
+  --el-fill-color-blank: var(--geek-bg);
+}
+
+.el-table, .el-table__expanded-cell {
+  background-color: transparent !important;
+  color: var(--geek-text) !important;
+}
+
+.el-table th, .el-table tr, .el-table td {
+  background-color: transparent !important;
+  border-bottom: 1px solid var(--geek-border) !important;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: rgba(88, 166, 255, 0.1) !important;
+}
+
+/* 玻璃拟态卡片 */
+.geek-card {
+  background: var(--geek-panel);
+  border: 1px solid var(--geek-border);
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 终端风格标题 */
+.terminal-title::before {
+  content: "> ";
+  color: var(--geek-success);
+  margin-right: 5px;
+}
+.terminal-cursor::after {
+  content: "_";
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
