@@ -21,3 +21,13 @@ python -m scripts.init_data
 pip install -r requirements.txt
 python app.py
 ```
+## Building 楼栋模块
+
+Base：`/api/buildings`  
+统一返回：`{"code":200,"msg":"success","data":...}`
+
+list：GET `/` → data: `[{id, building_no, total_floors, description, created_at, updated_at}]`  
+detail：GET `/<id>` → data: `{id, building_no, total_floors, description, created_at, updated_at}`  
+create：POST `/` body `{building_no, total_floors, description}` → data: `{inserted}`  
+update：PUT `/<id>` body `{building_no, total_floors, description}` → data: `{updated}`  
+delete：DELETE `/<id>` → data: `{deleted}`

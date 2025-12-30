@@ -33,6 +33,20 @@ class SQLHelper:
             cursor.close()
             conn.close() # 这里不是真的关闭，而是归还给连接池
 
+    def fetch_one(self, sql, args=None):
+        conn = self.pool.connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(sql, args)
+            result = cursor.fetchone()
+            return result
+        except Exception as e:
+            print(f"SQL Error: {e}")
+            return None
+        finally:
+            cursor.close()
+            conn.close()
+
     def execute_commit(self, sql, args=None):
         """执行增删改"""
         conn = self.pool.connection()
@@ -48,6 +62,22 @@ class SQLHelper:
         finally:
             cursor.close()
             conn.close()
+
+    def execute(self, sql, args=None):
+        conn = self.pool.connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(sql, args)
+            conn.commit()
+            return cursor.rowcount
+        except Exception as e:
+            conn.rollback()
+            print(f"SQL Error: {e}")
+            return None
+        finally:
+            cursor.close()
+            conn.close()
+
 
 # 实例化一个对象供外部直接调用
 db = SQLHelper()

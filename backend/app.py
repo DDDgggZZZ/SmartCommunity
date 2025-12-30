@@ -3,6 +3,7 @@ from flask_cors import CORS
 
 # 引入我们写好的路由蓝图
 from routes.user_routes import user_bp
+from routes.building_routes import building_bp
 
 app = Flask(__name__)
 
@@ -13,6 +14,7 @@ CORS(app)
 # url_prefix 的意思是：这个蓝图下的所有接口，前面都自动加上 /api/users
 # 所以访问地址依然是: http://127.0.0.1:5000/api/users/
 app.register_blueprint(user_bp, url_prefix='/api/users')
+app.register_blueprint(building_bp, url_prefix="/api/buildings")
 
 # 你以后如果有新的模块，比如账单模块，就这样加：
 # from routes.fee_routes import fee_bp
