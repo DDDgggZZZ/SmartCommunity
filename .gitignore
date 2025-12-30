@@ -25,3 +25,6 @@ venv/
 .DS_Store
 .vscode/
 .idea/
+
+# 配置文件
+backend/config.py
