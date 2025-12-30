@@ -15,6 +15,7 @@ mysql -u root -p --default-character-set=utf8mb4 < scripts/init.sql
 python -m scripts.init_data
 ```
 
+**先复制 backend/config.example.py 为 backend/config.py 并修改数据库配置。**
 ## 启动后端
 
 ```bash
