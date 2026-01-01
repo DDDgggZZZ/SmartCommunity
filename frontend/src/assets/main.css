@@ -32,4 +32,19 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
+}.fade-transform-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* 离场结束：透明且上移 20px（或者原地消失，视喜好而定） */
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* 动画过程：使用贝塞尔曲线让运动更顺滑 */
+.fade-transform-enter-active,
+.fade-transform-leave-active {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }

@@ -15,8 +15,28 @@ const router = createRouter({
         },
         {
           path: 'buildings',
-          name: 'Building Manager',
+          name: 'Buildings',
           component: () => import('../views/building/BuildingList.vue')
+        },
+        {
+          path: 'units',
+          name: 'Units',
+          component: () => import('../views/unit/UnitList.vue')
+        },
+        {
+          path: 'rooms',
+          name: 'Rooms',
+          component: () => import('../views/room/RoomList.vue')
+        },
+        {
+          path: 'parkings',
+          name: 'Parkings',
+          component: () => import('../views/parking/ParkingList.vue')
+        },
+        {
+          path: 'owners',
+          name: 'Owners',
+          component: () => import('../views/owner/OwnerList.vue')
         },
         {
           path: 'users',
