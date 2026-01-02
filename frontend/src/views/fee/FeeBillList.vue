@@ -3,7 +3,10 @@
     <div class="geek-card">
       <div class="card-header">
         <h3 class="title">> {{ role === 'admin' ? 'Bill Management' : 'My Bills' }}</h3>
-        <el-button v-if="role === 'admin'" type="success" @click="showGenDialog = true">Generate Bills</el-button>
+        <div v-if="role === 'admin'">
+          <el-button type="primary" @click="openAddDialog">Add Bill</el-button>
+          <el-button type="success" @click="showGenDialog = true">Generate Bills</el-button>
+        </div>
       </div>
 
       <div v-if="role === 'admin'" class="filter-bar" style="margin-bottom: 20px; display: flex; gap: 10px;">
@@ -43,7 +46,7 @@
       </el-table>
     </div>
 
-    <el-dialog v-model="showGenDialog" title="Generate Monthly Bills" width="400px">
+    <el-dialog v-model="showGenDialog" title="Generate Monthly Bills (Batch)" width="400px">
       <el-form :model="genForm" label-width="100px">
         <el-form-item label="Fee Type">
           <el-select v-model="genForm.fee_type_id" placeholder="Select Type">
@@ -64,22 +67,66 @@
         <el-button type="success" @click="handleGenerate">Generate</el-button>
       </template>
     </el-dialog>
+
+    <el-dialog v-model="showAddDialog" title="Add New Bill (Single)" width="500px">
+      <el-form :model="addForm" label-width="100px">
+        <el-form-item label="Owner ID">
+          <el-input v-model="addForm.owner_id" placeholder="Enter Owner ID (e.g., 1)" />
+        </el-form-item>
+        <el-form-item label="Fee Type">
+          <el-select v-model="addForm.fee_type_id" placeholder="Select Fee Type" style="width: 100%">
+            <el-option v-for="item in feeTypes" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Month">
+          <el-date-picker 
+            v-model="addForm.bill_month" 
+            type="month" 
+            value-format="YYYY-MM" 
+            placeholder="Pick a month" 
+            style="width: 100%"
+          />
+        </el-form-item>
+        <el-form-item label="Amount">
+          <el-input-number v-model="addForm.amount" :min="0" :precision="2" style="width: 100%" />
+        </el-form-item>
+        <el-form-item label="Status">
+           <el-radio-group v-model="addForm.status">
+             <el-radio label="未缴">Unpaid</el-radio>
+             <el-radio label="已缴">Paid</el-radio>
+           </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="showAddDialog = false">Cancel</el-button>
+        <el-button type="primary" @click="handleAdd">Submit</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getFeeBills, generateBills, payBill, getFeeTypes } from '../../api/fee'
+import { getFeeBills, generateBills, createBill, payBill, getFeeTypes } from '../../api/fee'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const loading = ref(false)
 const tableData = ref([])
 const feeTypes = ref([])
 const showGenDialog = ref(false)
+const showAddDialog = ref(false)
 const role = ref('staff')
 
 const query = ref({ owner_id: '', status: '', bill_month: '' })
 const genForm = ref({ fee_type_id: null, bill_month: '' })
+// 初始表单数据
+const addForm = ref({
+  owner_id: '',
+  fee_type_id: null,
+  bill_month: '',
+  amount: 0,
+  status: '未缴'
+})
 
 const loadData = async () => {
   loading.value = true
@@ -97,6 +144,38 @@ const loadData = async () => {
 
 const loadTypes = async () => {
   feeTypes.value = await getFeeTypes()
+}
+
+// 打开新增弹窗
+const openAddDialog = () => {
+  addForm.value = {
+    owner_id: '',
+    fee_type_id: null,
+    bill_month: '',
+    amount: 0,
+    status: '未缴'
+  }
+  showAddDialog.value = true
+  // 确保类型数据已加载
+  if(feeTypes.value.length === 0) {
+    loadTypes()
+  }
+}
+
+// 提交新增
+const handleAdd = async () => {
+  if (!addForm.value.owner_id || !addForm.value.fee_type_id || !addForm.value.bill_month) {
+    ElMessage.error('Please fill in Owner, Fee Type, and Month')
+    return
+  }
+  try {
+    await createBill(addForm.value)
+    ElMessage.success('Bill Added Successfully')
+    showAddDialog.value = false
+    loadData()
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 const handleGenerate = async () => {
@@ -134,9 +213,8 @@ onMounted(() => {
   }
   
   loadData()
-  if (role.value === 'admin') {
-    loadTypes()
-  }
+  // 预加载费用类型
+  loadTypes()
 })
 </script>
 

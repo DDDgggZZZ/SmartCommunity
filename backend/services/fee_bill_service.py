@@ -71,3 +71,15 @@ def get_fee_bill_by_id(bill_id):
     except Exception as e:
         print(f"[get_fee_bill_by_id] Error: {e}")
         return None
+# [新增] 创建单条账单
+def create_fee_bill(owner_id, fee_type_id, amount, bill_month, status='未缴'):
+    # 如果状态是已缴，可以考虑设置 pay_time，这里简化处理，只存基本字段
+    sql = """
+        INSERT INTO fee_bill (owner_id, fee_type_id, amount, bill_month, status)
+        VALUES (%s, %s, %s, %s, %s)
+    """
+    try:
+        return db.execute_commit(sql, (owner_id, fee_type_id, amount, bill_month, status))
+    except Exception as e:
+        print(f"[create_fee_bill] Error: {e}")
+        return None

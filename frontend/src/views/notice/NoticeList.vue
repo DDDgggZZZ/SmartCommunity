@@ -35,6 +35,7 @@
             type="datetime" 
             value-format="YYYY-MM-DD HH:mm:ss" 
             placeholder="Select date and time"
+            style="width: 100%"
           />
         </el-form-item>
       </el-form>
@@ -67,7 +68,7 @@ const loadData = async () => {
 }
 
 const openDialog = (row = {}) => {
-  form.value = { ...row } // 复制数据
+  form.value = { ...row }
   dialogVisible.value = true
 }
 
@@ -79,7 +80,13 @@ const handleSubmit = async () => {
   
   try {
     if (form.value.id) {
-      await updateNotice(form.value.id, form.value)
+      // ★ 关键：只提取需要修改的字段，避免发送 created_at 等干扰字段
+      const updateData = {
+        title: form.value.title,
+        content: form.value.content,
+        publish_time: form.value.publish_time
+      }
+      await updateNotice(form.value.id, updateData)
       ElMessage.success('Updated')
     } else {
       await createNotice(form.value)
