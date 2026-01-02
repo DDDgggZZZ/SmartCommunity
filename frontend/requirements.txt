@@ -1,0 +1,16 @@
+Flask
+flask-cors==6.0.2
+SQLAlchemy
+PyMySQL==1.1.2
+python-dotenv
+PyJWT
+cryptography
+bcrypt
+requests
+urllib3
+ujson
+click
+Werkzeug
+Jinja2
+itsdangerous
+greenlet

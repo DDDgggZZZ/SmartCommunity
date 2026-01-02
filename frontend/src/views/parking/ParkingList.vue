@@ -39,8 +39,8 @@
         <el-form-item label="Status">
           <el-radio-group v-model="form.status">
             <el-radio-button value="闲置">闲置</el-radio-button>
-            <el-radio-button value="已租">JZ</el-radio-button>
-            <el-radio-button value="已售">YS</el-radio-button>
+            <el-radio-button value="已租">已租</el-radio-button>
+            <el-radio-button value="已售">已售</el-radio-button>
           </el-radio-group>
         </el-form-item>
       </el-form>

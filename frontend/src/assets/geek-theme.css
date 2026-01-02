@@ -1,36 +1,85 @@
-/* frontend/src/assets/geek-theme.css */
+/* =========================================================
+   Geek Theme System (Dual Mode / 双模主题)
+   ---------------------------------------------------------
+   默认 (:root)      -> Light Mode (亮色, 适合普通用户)
+   暗黑 (html.dark)  -> Geek Mode  (暗黑, 适合管理员/黑客风)
+   ========================================================= */
+
+/* --- 1. 默认亮色模式 (Light Mode) --- */
 :root {
-  --geek-bg: #0d1117;       /* GitHub Dark Background */
-  --geek-panel: #161b22;    /* Panel Background */
-  --geek-border: #30363d;   /* Border */
-  --geek-text: #c9d1d9;     /* Text */
-  --geek-primary: #58a6ff;  /* Blue Accent */
-  --geek-success: #2ea043;  /* Green Accent */
-  --geek-danger: #da3633;   /* Red Accent */
-  --geek-font: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+  /* 核心背景色 - 亮色系 */
+  --geek-bg: #f0f2f5;           /* 整体背景：浅灰 */
+  --geek-panel: #ffffff;        /* 卡片/侧边栏：纯白 */
+  --geek-border: #dcdfe6;       /* 边框：浅灰 */
+  
+  /* 文本颜色 */
+  --geek-text: #303133;         /* 主文本：深灰 */
+  --geek-text-secondary: #909399; /* 次要文本 */
+  
+  /* 品牌色 (保持 Element Plus 默认蓝，或者稍微调整) */
+  --geek-primary: #409eff;      
+  --geek-success: #67c23a;
+  --geek-danger: #f56c6c;
+  
+  /* 字体：亮色模式下使用更易读的无衬线字体 */
+  --geek-font: 'Inter', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  
+  /* 阴影 */
+  --geek-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
+/* --- 2. 极客暗黑模式 (Dark Mode - 你原来的配色) --- */
+html.dark {
+  /* 核心背景色 - GitHub Dark */
+  --geek-bg: #0d1117; 
+  --geek-panel: #161b22;
+  --geek-border: #30363d;
+  
+  /* 文本颜色 */
+  --geek-text: #c9d1d9;
+  --geek-text-secondary: #8b949e;
+  
+  /* 品牌色 - 极客风更亮的蓝 */
+  --geek-primary: #58a6ff;
+  --geek-success: #2ea043;
+  --geek-danger: #da3633;
+  
+  /* 字体：暗黑模式下使用代码字体 */
+  --geek-font: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+  
+  /* 阴影 */
+  --geek-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* --- 3. 全局通用样式应用 --- */
 body {
   background-color: var(--geek-bg);
   color: var(--geek-text);
   font-family: var(--geek-font);
   margin: 0;
+  /* 添加过渡动画，让切换主题时丝般顺滑 */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 覆盖 Element Plus 的默认变量以适配黑客风 */
-:root {
+/* --- 4. 适配 Element Plus 变量 (使其随主题自动切换) --- */
+/* 这里利用 CSS 变量的继承特性，把 Element 的变量指向我们的 --geek 变量 */
+html {
   --el-color-primary: var(--geek-primary);
   --el-bg-color: var(--geek-bg);
   --el-bg-color-overlay: var(--geek-panel);
   --el-text-color-primary: var(--geek-text);
+  --el-text-color-regular: var(--geek-text-secondary);
   --el-border-color: var(--geek-border);
   --el-border-color-light: var(--geek-border);
-  --el-fill-color-blank: var(--geek-bg);
+  --el-fill-color-blank: var(--geek-panel); /* 输入框背景等 */
 }
 
+/* 表格样式适配 */
 .el-table, .el-table__expanded-cell {
   background-color: transparent !important;
   color: var(--geek-text) !important;
+  --el-table-tr-bg-color: transparent !important;
+  --el-table-header-bg-color: transparent !important;
 }
 
 .el-table th, .el-table tr, .el-table td {
@@ -38,9 +87,12 @@ body {
   border-bottom: 1px solid var(--geek-border) !important;
 }
 
+/* 鼠标悬停高亮 - 使用半透明的主色 */
 .el-table--enable-row-hover .el-table__body tr:hover > td {
-  background-color: rgba(88, 166, 255, 0.1) !important;
+  background-color: rgba(64, 158, 255, 0.1) !important;
 }
+
+/* --- 5. 自定义组件样式 --- */
 
 /* 玻璃拟态卡片 */
 .geek-card {
@@ -48,16 +100,18 @@ body {
   border: 1px solid var(--geek-border);
   border-radius: 6px;
   padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--geek-shadow);
+  transition: all 0.3s ease; /* 卡片也要有过渡动画 */
 }
 
-/* 终端风格标题 */
-.terminal-title::before {
+/* 终端风格标题 (仅在暗黑模式下显示 > 前缀，亮色模式下隐藏，让界面更清爽) */
+html.dark .terminal-title::before {
   content: "> ";
   color: var(--geek-success);
   margin-right: 5px;
 }
-.terminal-cursor::after {
+
+html.dark .terminal-cursor::after {
   content: "_";
   animation: blink 1s infinite;
 }
