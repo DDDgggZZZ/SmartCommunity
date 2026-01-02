@@ -25,6 +25,26 @@ from routes.owner_routes import owner_bp
 app.register_blueprint(owner_bp, url_prefix="/api/owners")
 from routes.owner_room_rel_routes import binding_bp
 app.register_blueprint(binding_bp, url_prefix="/api/owners/bindings")
+from routes.fee_type_routes import fee_type_bp
+app.register_blueprint(fee_type_bp, url_prefix="/api/fees/types")
+from routes.fee_bill_routes import fee_bill_bp
+app.register_blueprint(fee_bill_bp, url_prefix="/api/fees/bills")
+from routes.fee_bill_generate_routes import generate_bp
+app.register_blueprint(generate_bp, url_prefix="/api/fees/bills/generate")
+from routes.fee_bill_pay_routes import pay_bp
+app.register_blueprint(pay_bp, url_prefix="/api/fees/bills")
+from routes.repair_routes import repair_bp
+app.register_blueprint(repair_bp, url_prefix="/api/repairs")
+from routes.repair_submit_routes import repair_submit_bp
+app.register_blueprint(repair_submit_bp, url_prefix="/api/repairs")
+from routes.repair_update_routes import repair_update_bp
+app.register_blueprint(repair_update_bp, url_prefix="/api/repairs")
+from routes.notice_routes import notice_bp
+app.register_blueprint(notice_bp, url_prefix="/api/notices")
+from routes.auth_routes import auth_bp
+app.register_blueprint(auth_bp, url_prefix="/api/auth")
+from routes.dashboard_routes import dashboard_bp
+app.register_blueprint(dashboard_bp, url_prefix="/api/dashboard")
 
 
 
